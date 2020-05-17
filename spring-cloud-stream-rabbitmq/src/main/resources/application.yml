@@ -1,1 +1,35 @@
+server:
+  port: 8000
 
+spring:
+  application:
+    name: spring-cloud-stream-rabbitmq
+  cloud:
+    stream:
+      binders:
+        rabbit1:
+          type:
+            rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+      bindings:
+        output:
+          destination: topic1
+          group: ${spring.application.name}
+          content-type: application/json
+          binder: rabbit
+        input:
+          destination: topic1
+          group: ${spring.application.name}
+          content-type: application/json
+          binder: rabbit
+        personConsumer1-in-0.destination: topic1
+        uppercase-in-0.destination: topic1
+        uppercase-out-0.destination: topic1
+      function:
+        definition: reaciveSource,personConsumer1
